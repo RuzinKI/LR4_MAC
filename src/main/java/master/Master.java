@@ -16,7 +16,7 @@ public class Master extends Agent {
         System.out.println();
         System.out.println();
         System.out.println("Мастер стартовал");
-        this.addBehaviour(new MasterBehavior(this,5000, getProducers(), getConsumers()));
+        this.addBehaviour(new MasterBehavior(this,10000, getProducers(), getConsumers()));
 
     }
 

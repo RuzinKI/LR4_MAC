@@ -8,12 +8,21 @@ public class DistributorAgent  extends Agent {
     private Double costConsumer = 0d;
     private Double bestCost = 0d;
     private String nameProducer;
+    private String bestProducer;
 
     @Override
     protected void setup() {
         System.out.println(this.getLocalName() + " запущен");
 
         this.addBehaviour(new DistributorGetReqFromConsumerBehavior());
+    }
+
+    public String getBestProducer() {
+        return bestProducer;
+    }
+
+    public void setBestProducer(String bestProducer) {
+        this.bestProducer = bestProducer;
     }
 
     public Double getEnergy() {

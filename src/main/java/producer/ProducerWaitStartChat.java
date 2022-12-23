@@ -3,7 +3,6 @@ package producer;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import util.ChatBehaviour;
 
 public class ProducerWaitStartChat extends Behaviour {
     @Override
@@ -12,7 +11,7 @@ public class ProducerWaitStartChat extends Behaviour {
         ACLMessage request = myAgent.receive(messageTemplate);
 
         if (request != null) {
-            myAgent.addBehaviour(new ChatBehaviour());
+            myAgent.addBehaviour(new ChatProducerBehaviour(request.getContent()));
         } else {
             block();
         }

@@ -65,6 +65,8 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
                         if (bestCost > costFromProducer ) {
                             bestCost = costFromProducer;
+                            agent.setBestCost(bestCost);
+                            agent.setBestProducer(response.getSender().getLocalName());
                         }
                         bestProducer = response.getSender().getLocalName();
                     } else {
@@ -87,6 +89,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
     @Override
     public int onEnd() {
+
         if (producer.size() == 0) {
             System.out.println("У производителей нет подходящей энергии");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(null, null));
@@ -97,7 +100,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
         }
         if ((producer.size() == 1) && (bestCost <= costConsumer)) {
             System.out.println("На рынке один поставщик с подходящей энергией и ценой");
-            myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, costConsumer));
+            myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, bestCost));
         }
         if (producer.size() > 1) {
             System.out.println("Есть несколько поставщиков, можно начинать торги");
