@@ -60,7 +60,7 @@ public class ProducerBehavior extends Behaviour {
 
             if (type.equals("ВЭС")) {
                 ProducerAgent producerAgent = (ProducerAgent) this.getAgent();
-                Double energy = (1 / (B2*Math.sqrt(2*Math.PI)) * Math.exp(-(hour-B1) * (hour-B1) / (2*B2*B2)))*380;
+                Double energy = (1 / (B2*Math.sqrt(2*Math.PI)) * Math.exp(-(hour-B1) * (hour-B1) / (2*B2*B2)))*250;
 
                 Double startCost = 54/(energy+2)+1;
                 if (startCost > 7) {

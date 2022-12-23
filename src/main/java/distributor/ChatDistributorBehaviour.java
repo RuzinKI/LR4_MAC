@@ -76,6 +76,7 @@ public class ChatDistributorBehaviour extends Behaviour {
     public int onEnd() {
         agent.getBestCost();
         System.out.println("\n"+myAgent.getLocalName() + ": аукцион закрыт:\nЛучшая цена "+agent.getBestCost()+" от "+ agent.getBestProducer());
+        myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(agent.getEnergy(), agent.getBestCost()));
         return 0;
     }
 

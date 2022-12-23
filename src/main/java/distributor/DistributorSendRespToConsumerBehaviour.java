@@ -28,10 +28,11 @@ public class DistributorSendRespToConsumerBehaviour extends OneShotBehaviour {
         }
 
         if (cost != null) {
-            System.out.println(myAgent.getLocalName() + " отправляю Consumer-1 : " + energy + " энергии");
+            String stringCost = String.format("%.3f", cost);
+            System.out.println(myAgent.getLocalName() + ": отправляю Consumer-1 : " + energy + " энергии по "+stringCost+" руб/кВт*ч");
             request.setContent(energy+";"+cost);
         } else {
-            System.out.println(myAgent.getLocalName() + " не удалось купить ЭЭ");
+            System.out.println(myAgent.getLocalName() + ": не удалось купить ЭЭ");
             request.setContent("null;null");
         }
         myAgent.send(request);

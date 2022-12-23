@@ -72,6 +72,11 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
                     } else {
                         producer.add(response.getSender().getLocalName());
                         System.out.println(response.getSender().getLocalName() + ":    Не подходит потребителю " + cost + " > " + costConsumer);
+                        if (bestCost > costFromProducer ) {
+                            bestCost = costFromProducer;
+                            agent.setBestCost(bestCost);
+                            agent.setBestProducer(response.getSender().getLocalName());
+                        }
                     }
                 }
 

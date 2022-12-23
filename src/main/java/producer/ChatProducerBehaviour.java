@@ -27,7 +27,7 @@ public class ChatProducerBehaviour extends Behaviour {
 
     @Override
     public void onStart() {
-        System.out.println(myAgent.getLocalName() + " я в чате c " + testChatUser);
+        System.out.println(myAgent.getLocalName() + " я в чате");
         agent = (ProducerAgent) myAgent;
         minCost = agent.getMinCost();
     }
@@ -85,7 +85,7 @@ public class ChatProducerBehaviour extends Behaviour {
 
     @Override
     public int onEnd() {
-        System.out.println(myAgent.getLocalName() + ": выхожу из чата, моя цена была " + currentCost);
+        System.out.println(myAgent.getLocalName() + ": выхожу из чата");
         return 0;
     }
 
