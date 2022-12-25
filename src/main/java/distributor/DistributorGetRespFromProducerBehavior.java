@@ -13,6 +13,7 @@ import java.util.List;
 
 public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
+    int result;
     boolean stop = false;
     Integer count = 0;
     int num;
@@ -94,30 +95,36 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
         if ((producer.size() == 0) && agent.getDel()) {
             System.out.println("У производителей нет подходящей энергии, даже после деления");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(null, null));
+            result = 1;
         }
         if ((producer.size() == 0) && !agent.getDel()) {
             System.out.println("У производителей нет подходящей энергии, делим энергию пополам");
             agent.setDel(true);
             agent.setEnergy(agent.getEnergy()/2);
             myAgent.addBehaviour(new DistributorSendReqToProducerBehavior());
+            result = 2;
         }
         if ((producer.size() == 1) && (bestCost > costConsumer)) {
             System.out.println("На рынке один поставщик с подходящей энергией, но высокой ценой");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(null, null));
+            result = 3;
         }
         if ((producer.size() == 1) && (bestCost <= costConsumer)) {
             System.out.println("На рынке один поставщик с подходящей энергией и ценой");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, bestCost));
+            result = 4;
         }
         if ((producer.size() > 1) && !agent.getDel())  {
             System.out.println("Есть несколько поставщиков, можно начинать торги");
             System.out.println("");
             myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
+            result = 5;
         }
         if ((producer.size() > 1) && agent.getDel())  {
             System.out.println("Есть несколько поставщиков после деления энергии. Как купить у двоих?");
             System.out.println("");
 //            myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
+            result = 6;
         }
         return 0;
     }

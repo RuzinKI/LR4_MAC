@@ -28,13 +28,16 @@ public class Main {
 
     @SneakyThrows
     public static void createAgents() {
+
+        ConfigReader.setPath("config");
+
         AgentController тэс = agentContainer.createNewAgent("ТЭС", ProducerAgent.class.getName(), new Object[]{});
         AgentController вэс = agentContainer.createNewAgent("ВЭС", ProducerAgent.class.getName(), new Object[]{});
         AgentController сэс = agentContainer.createNewAgent("СЭС", ProducerAgent.class.getName(), new Object[]{});
 
         AgentController distributor_1 = agentContainer.createNewAgent("Distributor-1", DistributorAgent.class.getName(), new Object[]{});
         AgentController consumer_1 = agentContainer.createNewAgent("Consumer-1", ConsumerAgent.class.getName(), new Object[]{});
-        AgentController master = agentContainer.createNewAgent("master.Master-1", master.Master.class.getName(), new Object[]{});
+        AgentController master = agentContainer.createNewAgent("Master", master.Master.class.getName(), new Object[]{});
 
         тэс.start();
         вэс.start();

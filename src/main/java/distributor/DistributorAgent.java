@@ -1,6 +1,7 @@
 package distributor;
 
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 
 public class DistributorAgent  extends Agent {
 
@@ -16,6 +17,11 @@ public class DistributorAgent  extends Agent {
         System.out.println(this.getLocalName() + " запущен");
 
         this.addBehaviour(new DistributorGetReqFromConsumerBehavior());
+
+        Object[] arguments = getArguments();
+        for (Object argument: arguments) {
+            addBehaviour((Behaviour) argument);
+        }
     }
 
     public Boolean getDel() {
