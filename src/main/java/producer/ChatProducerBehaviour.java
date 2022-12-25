@@ -46,8 +46,8 @@ public class ChatProducerBehaviour extends Behaviour {
             Thread.sleep(30);
 
             if (mess[0].equals("stop")) {
-                agent.setEnergy(agent.getEnergy() - Double.parseDouble(mess[1]));
-                System.out.println(myAgent.getLocalName() + " продал энергию, осталось : " + agent.getEnergy());
+//                agent.setEnergy(agent.getEnergy() - Double.parseDouble(mess[1]));
+//                System.out.println(myAgent.getLocalName() + " продал энергию, осталось : " + agent.getEnergy());
                 stop = true;
             } else {
 

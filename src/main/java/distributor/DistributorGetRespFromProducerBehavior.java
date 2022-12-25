@@ -8,8 +8,7 @@ import lombok.SneakyThrows;
 
 import java.sql.Time;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
@@ -18,6 +17,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
     int num;
     String bestProducer = "none";
     Double bestCost = 100d;
+    Map<String,Double> prodAndCost;
     List<String> producer;
     Double costConsumer;
 
@@ -31,6 +31,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
     public DistributorGetRespFromProducerBehavior(Integer num) {
         this.num = num;
         producer = new ArrayList<>();
+        prodAndCost = new HashMap<>();
     }
 
     @SneakyThrows
@@ -62,6 +63,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
                 if (costFromProducer <= costConsumer) {
                     producer.add(response.getSender().getLocalName());
+                    prodAndCost.put(response.getSender().getLocalName(), costFromProducer);
                     System.out.println(response.getSender().getLocalName() + ":    Предложение цены " + cost + " от " + response.getSender().getLocalName() + " подходит потребителю");
 
                     if (bestCost > costFromProducer) {
@@ -72,7 +74,9 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
                     bestProducer = response.getSender().getLocalName();
                 } else {
                     producer.add(response.getSender().getLocalName());
+
                     System.out.println(response.getSender().getLocalName() + ":    Не подходит потребителю " + cost + " > " + costConsumer);
+
                     if (bestCost > costFromProducer) {
                         bestCost = costFromProducer;
                         agent.setBestCost(bestCost);
@@ -107,6 +111,7 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
         }
         if ((producer.size() == 1) && (bestCost <= costConsumer)) {
             System.out.println("На рынке один поставщик с подходящей энергией и ценой");
+            myAgent.addBehaviour(new DistributorSendOrderToProducerBehaviour());
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, bestCost));
         }
         if ((producer.size() > 1) && !agent.getDel())  {
@@ -114,10 +119,15 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
             System.out.println("");
             myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
         }
-        if ((producer.size() > 1) && agent.getDel())  {
+        if ((prodAndCost.size() > 1) && agent.getDel())  {
             System.out.println("Есть несколько поставщиков после деления энергии. Как купить у двоих?");
             System.out.println("");
-//            myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
+
+            myAgent.addBehaviour(new DistributorSendOrderToProducerBehaviour(prodAndCost));
+            int size = prodAndCost.size();
+            for (Double value : prodAndCost.values()) {
+                myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, value));
+            }
         }
         return 0;
     }

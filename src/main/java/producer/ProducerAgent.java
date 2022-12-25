@@ -31,6 +31,8 @@ public class ProducerAgent extends Agent {
 
         this.addBehaviour(new ProducerGetReqFromDistributorBehavior());
         this.addBehaviour(new ProducerWaitStartChat());
+        this.addBehaviour(new ProducerGetOrderFromDistributorBehaviour());
+
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());

@@ -50,7 +50,7 @@ public class ProducerBehavior extends Behaviour {
                 Double energy = A;
                 producerAgent.setEnergy(energy);
                 producerAgent.setMinCost(3.0);
-                producerAgent.setStartCost(6d);
+                producerAgent.setStartCost(4.8d);
                 System.out.println("Энергия ТЭС " + producerAgent.getEnergy());
                 hour++;
                 if (hour == 24) {
@@ -62,7 +62,7 @@ public class ProducerBehavior extends Behaviour {
                 ProducerAgent producerAgent = (ProducerAgent) this.getAgent();
                 Double energy = (1 / (B2*Math.sqrt(2*Math.PI)) * Math.exp(-(hour-B1) * (hour-B1) / (2*B2*B2)))*250;
 
-                Double startCost = 54/(energy+2)+1;
+                Double startCost = 50/(energy+2);
                 if (startCost > 7) {
                     startCost = 8d;
                 }

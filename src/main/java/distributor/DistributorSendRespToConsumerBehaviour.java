@@ -3,6 +3,7 @@ package distributor;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import lombok.SneakyThrows;
 
 public class DistributorSendRespToConsumerBehaviour extends OneShotBehaviour {
 
@@ -14,6 +15,7 @@ public class DistributorSendRespToConsumerBehaviour extends OneShotBehaviour {
         this.cost = cost;
     }
 
+    @SneakyThrows
     @Override
     public void action() {
         ACLMessage request = new ACLMessage(ACLMessage.INFORM);
@@ -26,7 +28,7 @@ public class DistributorSendRespToConsumerBehaviour extends OneShotBehaviour {
         if (myAgent.getLocalName().equals("Distributor-3")) {
             request.addReceiver(new AID("Consumer-3", false));
         }
-
+        Thread.sleep(10);
         if (cost != null) {
             String stringCost = String.format("%.3f", cost);
             System.out.println(myAgent.getLocalName() + ": отправляю Consumer-1 : " + energy + " энергии по "+stringCost+" руб/кВт*ч");

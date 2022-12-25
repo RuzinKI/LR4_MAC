@@ -61,7 +61,7 @@ public class ChatDistributorBehaviour extends Behaviour {
                 ACLMessage stopTorg = new ACLMessage(ACLMessage.INFORM_REF);
                 stopTorg.addReceiver(new AID(agent.getBestProducer(), false));
                 stopTorg.setContent("stop;"+ agent.getEnergy());
-
+                myAgent.addBehaviour(new DistributorSendOrderToProducerBehaviour());
                 myAgent.send(stopTorg);
                 Thread.sleep(100);
                 stop = true;
@@ -75,7 +75,8 @@ public class ChatDistributorBehaviour extends Behaviour {
     @Override
     public int onEnd() {
         agent.getBestCost();
-        System.out.println("\n"+myAgent.getLocalName() + ": аукцион закрыт:\nЛучшая цена "+agent.getBestCost()+" от "+ agent.getBestProducer());
+        String bestCost = String.format("%.3f", agent.getBestCost());
+        System.out.println("\n"+myAgent.getLocalName() + ": аукцион закрыт:\nЛучшая цена "+bestCost+" от "+ agent.getBestProducer());
         myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(agent.getEnergy(), agent.getBestCost()));
         return 0;
     }
