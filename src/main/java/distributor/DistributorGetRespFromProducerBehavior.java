@@ -80,16 +80,12 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
                     }
                 }
             }
-
             if (count == num) {
                 stop = true;
             }
-
         } else {
             block();
         }
-
-
     }
 
     @Override

@@ -36,10 +36,11 @@ public class MasterBehavior extends TickerBehaviour {
 
         Thread.sleep(100);
 
-        start = new ACLMessage(ACLMessage.PROPAGATE);
         for (String consumer: consumers) {
+            start = new ACLMessage(ACLMessage.PROPAGATE);
             start.addReceiver(new AID(consumer, false));
+            myAgent.send(start);
+            Thread.sleep(1500);
         }
-        myAgent.send(start);
     }
 }

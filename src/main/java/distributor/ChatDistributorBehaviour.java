@@ -60,7 +60,7 @@ public class ChatDistributorBehaviour extends Behaviour {
             if (countOut == 1) {
                 ACLMessage stopTorg = new ACLMessage(ACLMessage.INFORM_REF);
                 stopTorg.addReceiver(new AID(agent.getBestProducer(), false));
-                stopTorg.setContent("stop;stop");
+                stopTorg.setContent("stop;"+ agent.getEnergy());
 
                 myAgent.send(stopTorg);
                 Thread.sleep(100);
