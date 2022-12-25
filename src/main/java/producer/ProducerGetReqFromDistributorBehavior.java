@@ -40,19 +40,19 @@ public class ProducerGetReqFromDistributorBehavior extends Behaviour {
             }
 
 
-            if (request.getPerformative() == ACLMessage.CANCEL) {
-                System.out.println("Запрашивают " + energyRequest + " по цене: "+costRequest +";  имею " + currentEnergy + "   " + myAgent.getLocalName());
-                ACLMessage response = request.createReply();
-                if ((energyRequest > currentEnergy)) {
-                    response.setPerformative(ACLMessage.REFUSE);
-                } else if (costRequest>agent.getMinCost()) {
-                    response.setPerformative(ACLMessage.PROPOSE);
-                    response.setContent(energyRequest + ";" + costRequest);
-                } else {
-                    response.setPerformative(ACLMessage.REFUSE);
-                }
-                myAgent.send(response);
-            }
+//            if (request.getPerformative() == ACLMessage.CANCEL) {
+//                System.out.println("Запрашивают " + energyRequest + " по цене: "+costRequest +";  имею " + currentEnergy + "   " + myAgent.getLocalName());
+//                ACLMessage response = request.createReply();
+//                if ((energyRequest > currentEnergy)) {
+//                    response.setPerformative(ACLMessage.REFUSE);
+//                } else if (costRequest>agent.getMinCost()) {
+//                    response.setPerformative(ACLMessage.PROPOSE);
+//                    response.setContent(energyRequest + ";" + costRequest);
+//                } else {
+//                    response.setPerformative(ACLMessage.REFUSE);
+//                }
+//                myAgent.send(response);
+//            }
 
         } else {
             block();

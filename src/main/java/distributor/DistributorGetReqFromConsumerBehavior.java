@@ -7,9 +7,6 @@ import producer.ProducerAgent;
 
 public class DistributorGetReqFromConsumerBehavior extends Behaviour {
 
-    private double energy;
-    private boolean exit;
-
     @Override
     public void action() {
         MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(ACLMessage.CFP);

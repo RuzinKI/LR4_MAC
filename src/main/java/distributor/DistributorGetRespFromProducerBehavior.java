@@ -26,8 +26,9 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
     Integer twoCount = 0;
     //    Double energyDouble;
     Double energyConsumer;
+    DistributorAgent agent;
 
-    public DistributorGetRespFromProducerBehavior(Integer num ) {
+    public DistributorGetRespFromProducerBehavior(Integer num) {
         this.num = num;
         producer = new ArrayList<>();
     }
@@ -41,63 +42,68 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
 
         ACLMessage response = myAgent.receive(messageTemplate);
 
-        DistributorAgent agent = (DistributorAgent) myAgent;
+        agent = (DistributorAgent) myAgent;
         energyConsumer = agent.getEnergy();
         costConsumer = agent.getCostConsumer();
 
-        synchronized (count) {
-            if (response != null) {
-                String[] split = {"0.0d", "0.0d"};
-                count++;
-                if (response.getPerformative() == ACLMessage.REFUSE) {
-                    System.out.println(response.getSender().getLocalName() + ":    Отказ от " + response.getSender().getLocalName());
-                }
 
-                if (response.getPerformative() == ACLMessage.PROPOSE) {
-                    split = response.getContent().split(";");
-                    Double costFromProducer = Double.parseDouble(split[1]);
-
-                    String cost = String.format("%3f", costFromProducer);
-
-                    if (costFromProducer <= costConsumer) {
-                        producer.add(response.getSender().getLocalName());
-                        System.out.println(response.getSender().getLocalName() + ":    Предложение цены " + cost + " от " + response.getSender().getLocalName() + " подходит потребителю");
-
-                        if (bestCost > costFromProducer ) {
-                            bestCost = costFromProducer;
-                            agent.setBestCost(bestCost);
-                            agent.setBestProducer(response.getSender().getLocalName());
-                        }
-                        bestProducer = response.getSender().getLocalName();
-                    } else {
-                        producer.add(response.getSender().getLocalName());
-                        System.out.println(response.getSender().getLocalName() + ":    Не подходит потребителю " + cost + " > " + costConsumer);
-                        if (bestCost > costFromProducer ) {
-                            bestCost = costFromProducer;
-                            agent.setBestCost(bestCost);
-                            agent.setBestProducer(response.getSender().getLocalName());
-                        }
-                    }
-                }
-
-                if (count == num) {
-                    stop = true;
-                }
-
-            } else {
-                block();
+        if (response != null) {
+            String[] split = {"0.0d", "0.0d"};
+            count++;
+            if (response.getPerformative() == ACLMessage.REFUSE) {
+                System.out.println(response.getSender().getLocalName() + ":    Отказ от " + response.getSender().getLocalName());
             }
 
+            if (response.getPerformative() == ACLMessage.PROPOSE) {
+                split = response.getContent().split(";");
+                Double costFromProducer = Double.parseDouble(split[1]);
+
+                String cost = String.format("%3f", costFromProducer);
+
+                if (costFromProducer <= costConsumer) {
+                    producer.add(response.getSender().getLocalName());
+                    System.out.println(response.getSender().getLocalName() + ":    Предложение цены " + cost + " от " + response.getSender().getLocalName() + " подходит потребителю");
+
+                    if (bestCost > costFromProducer) {
+                        bestCost = costFromProducer;
+                        agent.setBestCost(bestCost);
+                        agent.setBestProducer(response.getSender().getLocalName());
+                    }
+                    bestProducer = response.getSender().getLocalName();
+                } else {
+                    producer.add(response.getSender().getLocalName());
+                    System.out.println(response.getSender().getLocalName() + ":    Не подходит потребителю " + cost + " > " + costConsumer);
+                    if (bestCost > costFromProducer) {
+                        bestCost = costFromProducer;
+                        agent.setBestCost(bestCost);
+                        agent.setBestProducer(response.getSender().getLocalName());
+                    }
+                }
+            }
+
+            if (count == num) {
+                stop = true;
+            }
+
+        } else {
+            block();
         }
+
 
     }
 
     @Override
     public int onEnd() {
 
-        if (producer.size() == 0) {
-            System.out.println("У производителей нет подходящей энергии");
+        if ((producer.size() == 0) && agent.getDel()) {
+            System.out.println("У производителей нет подходящей энергии, даже после деления");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(null, null));
+        }
+        if ((producer.size() == 0) && !agent.getDel()) {
+            System.out.println("У производителей нет подходящей энергии, делим энергию пополам");
+            agent.setDel(true);
+            agent.setEnergy(agent.getEnergy()/2);
+            myAgent.addBehaviour(new DistributorSendReqToProducerBehavior());
         }
         if ((producer.size() == 1) && (bestCost > costConsumer)) {
             System.out.println("На рынке один поставщик с подходящей энергией, но высокой ценой");
@@ -107,11 +113,15 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
             System.out.println("На рынке один поставщик с подходящей энергией и ценой");
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(energyConsumer, bestCost));
         }
-        if (producer.size() > 1) {
+        if ((producer.size() > 1) && !agent.getDel())  {
             System.out.println("Есть несколько поставщиков, можно начинать торги");
             System.out.println("");
             myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
-
+        }
+        if ((producer.size() > 1) && agent.getDel())  {
+            System.out.println("Есть несколько поставщиков после деления энергии. Как купить у двоих?");
+            System.out.println("");
+//            myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
         }
         return 0;
     }
