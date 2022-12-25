@@ -23,9 +23,11 @@ public class DistributorGetReqFromConsumerBehavior extends Behaviour {
             maxCost = Double.parseDouble(content[1]);
             agent.setEnergy(energyVal);
             agent.setCostConsumer(maxCost);
+            agent.setDel(false);
 
             System.out.println(myAgent.getLocalName() + " получил запрос от "+ request.getSender().getLocalName() +
                     " на покупку " + energyVal + "кВт за "+ maxCost + " рублей");
+
 
             myAgent.addBehaviour(new DistributorSendReqToProducerBehavior());
         } else {

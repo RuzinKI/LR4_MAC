@@ -28,7 +28,6 @@ public class DistributorSendReqToProducerBehavior extends OneShotBehaviour {
         for (String producer: producers) {
             request.addReceiver(new AID(producer, false));
         }
-
         myAgent.addBehaviour(new DistributorGetRespFromProducerBehavior(producers.length));
         myAgent.send(request);
     }
