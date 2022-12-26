@@ -8,9 +8,10 @@ import java.io.File;
 
 public class ConfigReader {
 
+    private static String path;
     @SneakyThrows
-    public static Graphic getGraphic(String name) {
-        String cfgPath = "src/main/resources/"+name+".xml";
+    public static Graphic getGraphic() {
+        String cfgPath = "src/main/resources/"+path+".xml";
 
         JAXBContext jaxbContext = JAXBContext.newInstance(Graphic.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -18,4 +19,12 @@ public class ConfigReader {
         Graphic graphic = (Graphic) unmarshaller.unmarshal(new File(cfgPath));
         return graphic;
     }
-}
+
+    public static String getPath() {
+        return path;
+    }
+
+    public static void setPath(String path) {
+        ConfigReader.path = path;
+    }
+    }

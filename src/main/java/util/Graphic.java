@@ -13,4 +13,7 @@ public class Graphic {
     @XmlElementWrapper(name = "points")
     @XmlElement(name = "value")
     private List<Integer> points;
+
+    @XmlElement(name = "max_price")
+    private int maxPrice;
 }

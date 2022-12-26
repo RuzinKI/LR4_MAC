@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <cfg>
+
+    <max_price>5</max_price>
+
     <points>
         <value>18</value>
         <value>12</value>
