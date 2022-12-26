@@ -100,9 +100,9 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
             myAgent.addBehaviour(new DistributorSendRespToConsumerBehaviour(null, null));
         }
         if ((producer.size() == 0) && !agent.getDel()) {
-            System.out.println("У производителей нет подходящей энергии, делим энергию пополам");
+            System.out.println("У производителей нет подходящей энергии, делим энергию на три");
             agent.setDel(true);
-            agent.setEnergy(agent.getEnergy()/2);
+            agent.setEnergy(agent.getEnergy()/3);
             myAgent.addBehaviour(new DistributorSendReqToProducerBehavior());
         }
         if ((producer.size() == 1) && (bestCost > costConsumer)) {
@@ -119,8 +119,8 @@ public class DistributorGetRespFromProducerBehavior extends Behaviour {
             System.out.println("");
             myAgent.addBehaviour(new DistributorSendMessageStartChat(producer));
         }
-        if ((prodAndCost.size() > 1) && agent.getDel())  {
-            System.out.println("Есть несколько поставщиков после деления энергии. Как купить у двоих?");
+        if ((prodAndCost.size() == 3) && agent.getDel())  {
+            System.out.println("Есть несколько поставщиков после деления энергии. Как купить у троих?");
             System.out.println("");
 
             myAgent.addBehaviour(new DistributorSendOrderToProducerBehaviour(prodAndCost));

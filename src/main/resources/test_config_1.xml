@@ -2,10 +2,10 @@
 
 <cfg>
 
-    <max_price>5</max_price>
+    <max_price>4</max_price>
 
     <points>
-        <value>18</value>
+        <value>15</value>
         <value>12</value>
         <value>10</value>
         <value>9</value>

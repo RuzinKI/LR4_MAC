@@ -16,6 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        ConfigReader.setPath("config");
+
         Properties properties = new Properties();
         properties.setProperty("gui", "true");
         ProfileImpl profile = new ProfileImpl(properties);
